@@ -1,13 +1,22 @@
 export default async function handler(req, res) {
 
+  // 🔓 Libera CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // 🛑 Responde preflight (CORS)
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  // 🚫 Bloqueia outros métodos
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método não permitido' });
   }
 
   const PIXEL_ID = '2012688992932143';
-
-  // 🔒 Padrão profissional (Vercel env)
-  const ACCESS_TOKEN = process.env.META_ACCESS_TOKEN || 'gBRWAZBWnknz9WgstaZBB5Qiv8BdRCJY9Xz1yyUIG0UJJvrQRGzoBPMmZB0CNViynbRVnsJF3idoDNf3LJlrH3y4SZBmyFjCQMn4JRB7uUZB8drEBZBTdo7V7IjY7XiX8OrtckeooX1EB4Nq3CKBAzzu2j3rERp1fZAdvljc7qL4tcgNkqinoMAZDZD';
+  const ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;
 
   const { event_name, event_id, value } = req.body;
 
