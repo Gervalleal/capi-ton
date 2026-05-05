@@ -5,12 +5,16 @@ export default async function handler(req, res) {
   }
 
   const PIXEL_ID = '2012688992932143';
-  const ACCESS_TOKEN = 'SEU_TOKEN_AQUI';
+  const ACCESS_TOKEN = 'EAAVfZB4zKEzgBRWAZBWnknz9WgstaZBB5Qiv8BdRCJY9Xz1yyUIG0UJJvrQRGzoBPMmZB0CNViynbRVnsJF3idoDNf3LJlrH3y4SZBmyFjCQMn4JRB7uUZB8drEBZBTdo7V7IjY7XiX8OrtckeooX1EB4Nq3CKBAzzu2j3rERp1fZAdvljc7qL4tcgNkqinoMAZDZD';
 
   const { event_name, event_id, value } = req.body;
 
+  const userAgent = req.headers['user-agent'];
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+
   try {
-    await fetch(`https://graph.facebook.com/v19.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`, {
+
+    const response = await fetch(`https://graph.facebook.com/v19.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -21,6 +25,10 @@ export default async function handler(req, res) {
           event_time: Math.floor(Date.now() / 1000),
           event_id: event_id,
           action_source: "website",
+          user_data: {
+            client_user_agent: userAgent,
+            client_ip_address: ip
+          },
           custom_data: {
             currency: "BRL",
             value: value
@@ -29,9 +37,13 @@ export default async function handler(req, res) {
       })
     });
 
+    const data = await response.json();
+    console.log(data);
+
     res.status(200).json({ ok: true });
 
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 }
