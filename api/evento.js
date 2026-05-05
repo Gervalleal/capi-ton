@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   }
 
   const PIXEL_ID = '2012688992932143';
-  const ACCESS_TOKEN = 'EAAVfZB4zKEzgBRWAZBWnknz9WgstaZBB5Qiv8BdRCJY9Xz1yyUIG0UJJvrQRGzoBPMmZB0CNViynbRVnsJF3idoDNf3LJlrH3y4SZBmyFjCQMn4JRB7uUZB8drEBZBTdo7V7IjY7XiX8OrtckeooX1EB4Nq3CKBAzzu2j3rERp1fZAdvljc7qL4tcgNkqinoMAZDZD';
+  const ACCESS_TOKEN = 'ZB4zKEzgBRWAZBWnknz9WgstaZBB5Qiv8BdRCJY9Xz1yyUIG0UJJvrQRGzoBPMmZB0CNViynbRVnsJF3idoDNf3LJlrH3y4SZBmyFjCQMn4JRB7uUZB8drEBZBTdo7V7IjY7XiX8OrtckeooX1EB4Nq3CKBAzzu2j3rERp1fZAdvljc7qL4tcgNkqinoMAZDZD ';
 
   const { event_name, event_id, value } = req.body;
 
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
     const data = await response.json();
     console.log(data);
 
-    res.status(200).json({ ok: true });
+    res.status(200).json({ ok: true, fb: data });
 
   } catch (err) {
     console.log(err);
